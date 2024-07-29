@@ -1,21 +1,40 @@
-const plusButton = document.getElementById("plus");
-const quantityElem = document.getElementById("quantity");
-const minusButton = document.getElementById("minus");
-const unitPriceElem = document.getElementById("unitPrice")
-const totalPriceElem = document.getElementById("total")
+const plusButtons = document.querySelectorAll(".plus");
+const minusButtons = document.querySelectorAll(".minus");
+const quantityElems = document.querySelectorAll(".quantity");
+const unitPriceElems = document.querySelectorAll(".unit-price");
+const totalPriceElem = document.getElementById("total");
 
-let quantity = parseInt(quantityElem.innerText);
+for (let i = 0; i < plusButtons.length; i++) {
+  const button = plusButtons[i];
+  const index = i;
 
-plusButton.addEventListener("click", incrementQty);
-minusButton.addEventListener("click", decrementQty);
+  button.addEventListener("click", () => {
+    incrementQty(index);
+  });
+}
 
-function incrementQty() {
+for (let i = 0; i < minusButtons.length; i++) {
+  const button = minusButtons[i];
+  const index = i;
+
+  button.addEventListener("click", () => {
+    decrementQty(index);
+  });
+}
+
+function incrementQty(index) {
+  const quantityElem = quantityElems[index];
+  const unitPriceElem = unitPriceElems[index];
+  let quantity = parseInt(quantityElem.innerText);
   quantity += 1;
   quantityElem.innerText = quantity;
   updateTotalPrice();
 }
 
-function decrementQty() {
+function decrementQty(index) {
+  const quantityElem = quantityElems[index];
+  const unitPriceElem = unitPriceElems[index];
+  let quantity = parseInt(quantityElem.innerText);
   if (quantity > 0) {
     quantity -= 1;
     quantityElem.innerText = quantity;
@@ -24,7 +43,11 @@ function decrementQty() {
 }
 
 function updateTotalPrice() {
-const unitPrice = parseInt(unitPriceElem.innerText);
-const totalPrice = quantity * unitPrice;
-totalPriceElem.innerText = `${totalPrice} $`;
+  let total = 0;
+  quantityElems.forEach((quantityElem, index) => {
+    const quantity = parseInt(quantityElem.innerText);
+    const unitPrice = parseInt(unitPriceElems[index].innerText);
+    total += quantity * unitPrice;
+  });
+  totalPriceElem.innerText = total;
 }
