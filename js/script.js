@@ -2,6 +2,7 @@ const plusButtons = document.querySelectorAll(".plus");
 const minusButtons = document.querySelectorAll(".minus");
 const quantityElems = document.querySelectorAll(".quantity");
 const unitPriceElems = document.querySelectorAll(".unit-price");
+const trashIcons = document.querySelectorAll(".delete");
 const totalPriceElem = document.getElementById("total");
 
 for (let i = 0; i < plusButtons.length; i++) {
@@ -22,9 +23,19 @@ for (let i = 0; i < minusButtons.length; i++) {
   });
 }
 
+for (let i = 0; i < trashIcons.length; i++) {
+  const icon = trashIcons[i];
+  const card = icon.closest(".card");
+  const index = i;
+
+  icon.addEventListener("click", () => {
+    card.remove();
+    updateTotal(index);
+  });
+}
+
 function incrementQty(index) {
   const quantityElem = quantityElems[index];
-  const unitPriceElem = unitPriceElems[index];
   let quantity = parseInt(quantityElem.innerText);
   quantity += 1;
   quantityElem.innerText = quantity;
@@ -33,7 +44,6 @@ function incrementQty(index) {
 
 function decrementQty(index) {
   const quantityElem = quantityElems[index];
-  const unitPriceElem = unitPriceElems[index];
   let quantity = parseInt(quantityElem.innerText);
   if (quantity > 0) {
     quantity -= 1;
@@ -50,4 +60,10 @@ function updateTotalPrice() {
     total += quantity * unitPrice;
   });
   totalPriceElem.innerText = total;
+}
+function updateTotal(index) {
+  const quantityElem = parseInt(quantityElems[index].innerText);
+  const unitPrice = parseInt(unitPriceElems[index].innerText);
+  totalPriceElem.innerText -= unitPrice * quantityElem;
+
 }
